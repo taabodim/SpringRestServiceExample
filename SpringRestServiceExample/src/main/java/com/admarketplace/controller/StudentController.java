@@ -36,8 +36,6 @@ public class StudentController {
 
 	List<User> allUsers = new ArrayList<User>();
 
-
-
 	@RequestMapping(value = "/add/{name}", method = RequestMethod.GET)
 	public @ResponseBody UserResponse addStudent(@PathVariable String name) {
 		User user = new User(name);
@@ -82,7 +80,66 @@ public class StudentController {
 
 		return res;
 	}
-
+	@RequestMapping(value = "/update/name/{name}/{newName}", method = RequestMethod.GET)
+	public @ResponseBody UserResponse updateNameStudent(@PathVariable String name,@PathVariable String newName) {
+		for (User user : allUsers) {
+			if (user.name.equalsIgnoreCase(name)) {
+				user.name = newName;
+				break;
+			}
+		}
+		UserResponse res = new UserResponse(name,
+				"student name was updated from "+name+" to "+newName);
+		
+		return res;
+	}
+	
+	@RequestMapping(value = "/update/password/{name}/{newPassword}", method = RequestMethod.GET)
+	public @ResponseBody UserResponse updatePasswordStudent(@PathVariable String name,@PathVariable String newPassword) {
+		String oldPassword="";
+		for (User user : allUsers) {
+			if (user.name.equalsIgnoreCase(name)) {
+				oldPassword = user.password;
+				user.password = newPassword;
+				break;
+			}
+		}
+		UserResponse res = new UserResponse(name,
+				"student password was updated from "+oldPassword+" to "+newPassword);
+		
+		return res;
+	}
+	
+	@RequestMapping(value = "/update/username/{name}/{newUsername}", method = RequestMethod.GET)
+	public @ResponseBody UserResponse updateUsernameStudent(@PathVariable String name,@PathVariable String newUsername) {
+		String oldUsername="";
+		for (User user : allUsers) {
+			if (user.name.equalsIgnoreCase(name)) {
+				oldUsername = user.username;
+				user.username = newUsername;
+				break;
+			}
+		}
+		UserResponse res = new UserResponse(name,
+				"student username was updated from "+oldUsername+" to "+newUsername);
+		
+		return res;
+	}
+	@RequestMapping(value = "/delete/{name}", method = RequestMethod.GET)
+	public @ResponseBody UserResponse deleteStudent(@PathVariable String name) {
+		String oldUsername="";
+		for (User user : allUsers) {
+			if (user.name.equalsIgnoreCase(name)) {
+				oldUsername = user.name;
+				allUsers.remove(user);
+				break;
+			}
+		}
+		UserResponse res = new UserResponse(name,
+				"student "+oldUsername+" was deleted from school");
+		
+		return res;
+	}
 	@RequestMapping(value = "/deleteAll", method = RequestMethod.DELETE)
 	public @ResponseBody UserResponse deleteAllStudents() {
 		allUsers = new ArrayList<User>();
